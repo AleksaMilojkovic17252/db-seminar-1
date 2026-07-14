@@ -1,0 +1,11 @@
+SQL Error [P0003]: ERROR: query `EXPLAIN ANALYZE (DISTSQL)
+SELECT * FROM orders
+WHERE status = 'pending'
+` contains a full table/index scan which is explicitly disallowed
+  Hint: try overriding the `disallow_full_table_scans` or increasing the `large_full_scan_rows` cluster/session settings
+
+  SQL Error [P0003]: ERROR: query `EXPLAIN ANALYZE (DISTSQL)
+SELECT * FROM orders WHERE total > 100` contains a full table/index scan which is explicitly disallowed
+  Hint: try overriding the `disallow_full_table_scans` or increasing the `large_full_scan_rows` cluster/session settings
+
+Error position:

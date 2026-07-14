@@ -1,0 +1,76 @@
+"info"
+planning time: 13ms
+execution time: 22.5s
+distribution: full
+vectorized: true
+"plan type: generic, re-optimized"
+"rows decoded from KV: 30,050,000 (2.1 GiB, 212 gRPC calls)"
+cumulative time spent in KV: 18.6s
+maximum memory usage: 60 KiB
+"network usage: 499 MiB (19,481 messages)"
+sql cpu time: 49.9s
+isolation level: serializable
+priority: normal
+quality of service: regular
+""
+• sort
+"│ sql nodes: n2, n3"
+│ actual row count: 10
+│ estimated max memory allocated: 20 KiB
+│ estimated max sql temp disk usage: 0 B
+│ sql cpu time: 33µs
+│ estimated row count: 10
+│ order: -sum
+│
+└── • group (hash)
+"    │ sql nodes: n2, n3"
+    │ actual row count: 10
+    │ estimated max memory allocated: 120 KiB
+    │ estimated max sql temp disk usage: 0 B
+    │ sql cpu time: 180µs
+    │ estimated row count: 10
+    │ group by: category
+    │
+    └── • render
+        │
+        └── • hash join
+"            │ sql nodes: n2, n3"
+"            │ actual row count: 30,000,000"
+            │ estimated max memory allocated: 3.2 MiB
+            │ estimated max sql temp disk usage: 0 B
+            │ sql cpu time: 3.4s
+"            │ estimated row count: 30,036,043"
+            │ equality: (product_id) = (id)
+            │ right cols are key
+            │
+            ├── • scan
+"            │     sql nodes: n2, n3"
+"            │     kv nodes: n2, n3"
+"            │     actual row count: 30,000,000"
+            │     KV time: 18.6s
+            │     KV contention time: 0µs
+"            │     KV rows decoded: 30,000,000"
+            │     KV bytes read: 2.1 GiB
+            │     KV gRPC calls: 211
+            │     estimated max memory allocated: 20 MiB
+            │     sql cpu time: 9.8s
+"            │     estimated row count: 30,000,000 (100% of the table; stats collected 13 hours ago)"
+            │     table: order_items@order_items_pkey
+            │     spans: FULL SCAN
+            │
+            └── • scan
+                  sql nodes: n3
+                  kv nodes: n3
+"                  actual row count: 50,000"
+                  KV time: 28ms
+                  KV contention time: 0µs
+"                  KV rows decoded: 50,000"
+                  KV bytes read: 4.4 MiB
+                  KV gRPC calls: 1
+                  estimated max memory allocated: 4.4 MiB
+                  sql cpu time: 7ms
+"                  estimated row count: 50,000 (100% of the table; stats collected 13 hours ago)"
+                  table: products@products_pkey
+                  spans: FULL SCAN
+""
+Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJzUWN1u47gVvu9TELyyA9rmnyRKwALKJuk2u5N44GSmXRSBobEYR4gteSR6knSRx-oL9MkKSZatf1tOZrq9skweHpLf-c7hR_4Bo68LaMGbiw8XZ7dgNZw5Ss6D8AWBWbD2Ve-kD05vgKfkMppGwcJFIFove4E3_Lp2fOWpF3ACAm-49j01XYXeTCb28zCIomkov0l_LdMh7WNOQI-AAYiNXC9KpgYjQDDu9xOHvlQ7d863ed5bYuB8m0-_qhcEls5zr7qgpfOc_gN_nYyvQBC6Mpwmu4p7Aw_8Or68BqswcNczlbStwPgarIaeC36KF7vpmnou-GUy_vQR_Px7Di0wnpxfTOK2ws7B-cXNGUTQD1x57SxlBK1_QgIRpBBBBu8QXIXBTEZREMZdfySGl-4ztDCCnr9aq7RZeWohoQWTZUsXIuhK5XiLxJ_NBvDu9Q7BWRBKaO2sr4NBsBoRVjSXz3K2Vl7gA-UtpQXYf_4dQRTTAMxW62LjF0fNHmQEgrVarZUFOEQwDJ52DQTDu1cE07-x-zsEI-XMJbREbnOX59Ai7BXlNkhyG6xZ-63zZSEn0nFlOMLFDeRiZ-e-p6tH-QIRPAsW66UfWWAXMQQyqiCw4wUCGdMggjcrJx4zGBFiUswNbHDGqc4YNxhwfBcQEKgHGUIEf_sM4l1EFvBp-jfFTETpv1ngK-nnEMYpmL99Bgl2rpwFrnQtQCgShCBm4LT3y4uSEQil41rAxDq48n5OO-aTj2dg5iwWkQVMkratHC_MjAuOrj6fnYFIyVWawKAnn9XI81U_bzeqGSLlY3WIKUamgAgunWewlMuY6s5iEcS8jyfGm0UW2cOHtI49hCKN0AqFdispUmlHhi8v4MGJHkq0JynrN3QjJbrhRrbt_K79uoS6i0fuM6mh7N-c6OHXwPNlOCql3ELeq55N-j-F3vwh-YIIjuPN2wTZFNkM2RzZGrJ1iCoJSoZG1ByBYcaTuD8Og5LLVczsR7COnHlMP1CN0MZnJUICMUwqEeLIFAwJ3JzsrIR-p1xP65RWxGwifVeGFrDpic0Q6CW__ZMesSzr_OLs8ur0w6Bn8xHBeNfS7yNgUwTiEbVYGum-i2AY7wwGL4GhdQHjdD4P5dxRQTgySoSPETq9_n16Pb6dXn_68KFnazGRzsafrm-nk_Hfb3rx35tPVxuGJV90-8W2xpvvq9N_9Gzer6NcK-cY20c5TRi1hYHgIa-Feu-50q0YaKUIGG8oBu0xMivrKMcoC8X0Mga-FI7ki2-_tIKtvg2SEX9tM4LkSM4RsLWRrSNgG7WBJOnhUx9JHYPfjigemdO9YTQac0QvRcjskiM3QahkOCKkKoSqEFDchgA5CoHM5xsAMMryiBQQoIfLI_Lj5FGdOtpKJtM0ONNNjWqG0SyZWF4yETzUO6smAxEhkM5qVBMZUvBLnWoiFNfIprynNtm0tRvVDKmVTYSKEaGdhZOWwlGhlY4MoVdq5G4t7ymcjuYhLU6T3aXs7KPCwJh52QUqJ8Fb-ELFsitdNIwwrqEKH_J6gV2jr7c-WkiS2oxKpvXkSFK2nhi7ZZU0yrL2PmaWSbGZ_y2EoCVC0EZC_AAlzf9flbSGTJ1VUlZDmOiIdlDSvEs6pkpa_zFKWtQpafGuYJSVtN4FjJxKE_87JU2_k46uZ9131tHiDaWgPUIE_7mFtNGqIo_T0cahKpIdLKMJ7pIhmY6mh-howt5fR5OGd8YOCFR0dPG4wu0ITGS0CvxIlo-t2qlwaaoBiUkt3blMMyAK1uFMfgyDWWKb_h0njpIGV0Yq7SU8_XfpZ32RCqWz3D5c5V2RsiuSd0ULnkiyWFX70EuGZkv8jGMOP53UyhIdMV4JoY6YKZChEXj3hu2ajdv1pXoKwkewcJT0Zy8W0DQzZVfW8-R4KhOSQy1KYh7J0HMW3r-c_I0xfb7MhiW7COVMet-SXEecUKQTM2eSCcvMhpKstGcWSxnFMOaNDMQ1vQa9uL3y0L6btYAeK6NHW3nHmmmnlz2xVk8tBBZlT7w1otrBBKabqNUzmB5VgcThF_n8HkmFtu2bJM1p2o23rcTlRnFgibmshbEmFWAPX9mBhbqAEy3jpLXSSm-mFeFlV3qrK9wBcXYs4jpuRdxoQZwM-Yawb8W8zM1KKhtHniBVoLBoBIqlVbOppIoWmATShIYwby2pQt9fUglBpk7rMIs7cBm43bxFALvh13wkVQrYsOU2QPbeBmo1pFZ7Aguk4crbgEA6ZkgTpRO4kleiA13osXSh5rKlkLH2vKIcmUZbOSNDsp8tGjnoSWUzWQGzSllrx8xsxKxCkfSFq4Eipn7UPaPhuZ6LylY1hGmpnGjlrZrt0hY3l3CjovX2yGTS7Mus-GoXjs0yoxtt6ZA181ajf8LjoFLO9iDVolVqFBl7b0XGD78SFrZZkcKkXQuTFjFMKqQn7XK4g9jgAjefodqmr-EUFcfrO8y_i74z4ivw_SJ4mnoutKC4dzE37vHA0U0-4ETggaOZ2oByYRKdEdd04uP5fuHMo_gefvMQPCWg3b6s4lv0vbOIJIJXzqM8l0qGS8_3IuXNNj2vr3_5bwAAAP__kJ5YAw==

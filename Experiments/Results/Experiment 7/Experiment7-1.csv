@@ -1,0 +1,36 @@
+"info"
+planning time: 633µs
+execution time: 3s
+distribution: full
+vectorized: true
+"plan type: generic, re-optimized"
+"rows decoded from KV: 5,500,000 (549 MiB, 56 gRPC calls)"
+cumulative time spent in KV: 5.8s
+maximum memory usage: 10 MiB
+network usage: 0 B (4 messages)
+sql cpu time: 2.3s
+isolation level: serializable
+priority: normal
+quality of service: regular
+""
+• filter
+"│ sql nodes: n1, n2, n3"
+"│ actual row count: 100,266"
+│ sql cpu time: 120ms
+│ estimated row count: 0
+│ filter: (status = 'cancelled') AND (total < 10)
+│
+└── • scan
+"      sql nodes: n1, n2, n3"
+"      kv nodes: n1, n2"
+"      actual row count: 5,500,000"
+      KV time: 5.8s
+      KV contention time: 0µs
+"      KV rows decoded: 5,500,000"
+      KV bytes read: 549 MiB
+      KV gRPC calls: 56
+      estimated max memory allocated: 31 MiB
+      sql cpu time: 2.2s
+"      estimated row count: 5,000,000 (100% of the table; stats collected 1 hour ago; using stats forecast for 24 minutes in the future)"
+      table: orders@orders_pkey
+      spans: FULL SCAN

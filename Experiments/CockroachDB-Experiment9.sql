@@ -1,6 +1,7 @@
+-- Query A: single-table aggregation, low-cardinality GROUP BY (region × status, ≤16 groups)
 SET vectorize = on;
 
-EXPLAIN ANALYZE
+EXPLAIN ANALYZE (DISTSQL)
 SELECT
     region,
     status,
@@ -15,7 +16,7 @@ ORDER BY region, status;
 
 SET vectorize = off;
 
-EXPLAIN ANALYZE
+EXPLAIN ANALYZE (DISTSQL)
 SELECT
     region,
     status,
@@ -30,6 +31,7 @@ ORDER BY region, status;
 
 SET vectorize = on;
 
+-- Query B: join + aggregation, larger input (order_items, 30M rows)
 EXPLAIN ANALYZE (DISTSQL)
 SELECT
     p.category,

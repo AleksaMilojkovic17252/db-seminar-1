@@ -1,0 +1,45 @@
+"info"
+distribution: full
+vectorized: true
+""
+• project
+"│ columns: (name, total)"
+│
+└── • hash join (inner)
+"    │ columns: (customer_id, total, id, name, country)"
+"    │ estimated row count: 252,761"
+    │ equality: (customer_id) = (id)
+    │ right cols are key
+    │
+    ├── • render
+"    │   │ columns: (customer_id, total)"
+    │   │ render customer_id: customer_id
+    │   │ render total: total
+    │   │
+    │   └── • filter
+"    │       │ columns: (customer_id, total)"
+"    │       │ estimated row count: 3,775,003"
+    │       │ filter: total > 500
+    │       │
+    │       └── • scan
+"    │             columns: (customer_id, total)"
+"    │             estimated row count: 5,000,000 (100% of the table; stats collected 2 hours ago)"
+    │             table: orders@orders_pkey
+    │             spans: FULL SCAN
+    │
+    └── • filter
+"        │ columns: (id, name, country)"
+"        │ estimated row count: 33,348"
+        │ filter: country = 'RS'
+        │
+        └── • scan
+"              columns: (id, name, country)"
+"              estimated row count: 500,000 (100% of the table; stats collected 8 hours ago)"
+              table: customers@customers_pkey
+              spans: FULL SCAN
+""
+index recommendations: 2
+"1. type: index creation"
+   SQL command: CREATE INDEX ON seminar.public.customers (country) STORING (name);
+"2. type: index creation"
+   SQL command: CREATE INDEX ON seminar.public.orders (total) STORING (customer_id);

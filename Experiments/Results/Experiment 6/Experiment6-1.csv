@@ -1,0 +1,30 @@
+"info"
+planning time: 868µs
+execution time: 5m48s
+distribution: local
+vectorized: true
+"plan type: generic, re-optimized"
+"rows decoded from KV: 10,000,000 (613 MiB, 343 gRPC calls)"
+cumulative time spent in KV: 5m48s
+maximum memory usage: 69 MiB
+network usage: 0 B (0 messages)
+used follower read
+sql cpu time: 6s
+isolation level: serializable
+priority: normal
+quality of service: regular
+""
+• filter
+"│ estimated row count: 1,005,300"
+│ filter: status = 'pending'
+│
+└── • index join
+"    │ estimated row count: 5,000,000"
+    │ table: orders@orders_pkey
+    │
+    └── • scan
+"          estimated row count: 5,000,000 (100% of the table; stats collected 8 minutes ago; using stats forecast for 1 hour in the future)"
+          table: orders@idx_orders_customer
+          spans: FULL SCAN
+""
+Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJyslV9u4zYQxt97isG8bFvQa1F_nIRAgaDZbJu22SycYPtQGAEtThwiEqklKcRG4GP1Aj1ZQUlunaydJsU-CBBnyG_mG_0kPaD_XKHAy9PfTk-u4Ht4P704B-sUOX-s1fK6v70uWx9sTQ5-__l0ego-yNB6-AHeNGSUNos3yNBYRR9kTR7FH8hxxrBxtiTvrYuhh27DmVqiSBhq07QhhmcMS-sIxQMGHSpCgVdyXtGUpCI3TpChoiB11cnu7wwZntiqrY0XoBWDTfxaK2R42ciYGCHDizYIOObIsPWk4MZWlb0nB45k3PnrJ4h9egGGMzBpHwq6JgH87ZHv16U1gUzQ1gyp5K8_h5Sz9x4UlVaRElCwJEni1Sfnq0C-KyUg5QWc6x_7xGL68QRKWVVeQDoUbaR2m83bOuefTk7AB2qgtK0J8C0tw1ib8N3WtvGXB4juvjyQpuOuXC2XUFNt3QpkVdlShtg9T4YO_ecKyqYdzBZFVke3cxnKW_Jg29DEqebs8DBDht0INsF_G5mtGfbR4cH7IBeEgm-RcvYORbJmL4flF6vNwArfycrASXNHq2cYYT3010oGYuBvdbO57VBn0DhtnQ4rBsEGWTFQ2nfTZOBooa15KVAMTLYNVVHnk69IVXZ0tJuqLOX_G6tk_B8Y7eaum4cPjmT_gu6GrNg0HNMRtEB1E8d7B62XizgG2MHg23wfgvnrEUyfIMhfg-B7XQVy5MbpYwD7uIDjYvtLKYS4vJqeffgJGdKSynbreecH3Xv12OkQfJFT3jlNOd_rNHviNH2N0yn5xhpPj3zuq5Q8qTTi6xlDUgvqfwfetq6kj86W3d5-edEJdQFFPvRZ3i_OzCbVM_XPt2JbiT-rlO5X4k-V0meVsud6mjG8qex9_PcInOd5lkxoMsonRTbKD7JydHgwSUcTVXA1Obzhc5IYD8iFj8O-vLX3nezVqomjupGVJ4bn8o7eUSBXa6N90OWQWa-_-TsAAP__7y52Zg==

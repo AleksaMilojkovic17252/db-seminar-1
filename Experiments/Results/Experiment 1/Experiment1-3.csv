@@ -1,0 +1,20 @@
+"info"
+distribution: local
+vectorized: true
+""
+• index join
+"│ columns: (id, customer_id, order_date, ship_date, status, priority, total, discount, region)"
+"│ estimated row count: 1,133,109"
+│ table: orders@orders_pkey
+│ key columns: id
+│
+└── • filter
+"    │ columns: (id, status, total)"
+"    │ estimated row count: 1,133,109"
+    │ filter: total > 500
+    │
+    └── • scan
+"          columns: (id, status, total)"
+"          estimated row count: 1,500,791 (30% of the table; stats collected 2 minutes ago)"
+          table: orders@idx_orders_status
+"          spans: /""pending""-/""pending""/PrefixEnd"

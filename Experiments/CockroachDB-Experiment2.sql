@@ -10,18 +10,18 @@ WHERE c.id IN (
 EXPLAIN (VERBOSE)
 SELECT c.name, c.country
 FROM customers c
-JOIN orders o ON c.id = o.customer_id
-WHERE o.total > 1000;
-
-EXPLAIN (VERBOSE)
-SELECT c.name, c.country
-FROM customers c
 WHERE EXISTS (
     SELECT 1
     FROM orders o
     WHERE o.customer_id = c.id
     AND o.total > 1000
 );
+
+EXPLAIN (VERBOSE)
+SELECT DISTINCT c.name, c.country
+FROM customers c
+JOIN orders o ON c.id = o.customer_id
+WHERE o.total > 1000;
 
 EXPLAIN ANALYZE (DISTSQL)
 SELECT c.name, c.country
@@ -31,3 +31,34 @@ WHERE c.id IN (
     FROM orders o
     WHERE o.total > 1000
 );
+
+EXPLAIN ANALYZE (DISTSQL)
+SELECT c.name, c.country
+FROM customers c
+WHERE EXISTS (
+    SELECT 1
+    FROM orders o
+    WHERE o.customer_id = c.id
+    AND o.total > 1000
+);
+
+
+EXPLAIN ANALYZE (DISTSQL)
+SELECT DISTINCT c.name, c.country
+FROM customers c
+JOIN orders o ON c.id = o.customer_id
+WHERE o.total > 1000;
+
+EXPLAIN (VERBOSE)
+SELECT DISTINCT ON (c.id) c.name, c.country
+FROM customers c
+JOIN orders o ON c.id = o.customer_id
+WHERE o.total > 1000
+ORDER BY c.id;
+
+EXPLAIN ANALYZE (DISTSQL)
+SELECT DISTINCT ON (c.id) c.name, c.country
+FROM customers c
+JOIN orders o ON c.id = o.customer_id
+WHERE o.total > 1000
+ORDER BY c.id;

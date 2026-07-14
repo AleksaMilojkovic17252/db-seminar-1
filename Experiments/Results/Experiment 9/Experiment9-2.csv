@@ -1,0 +1,43 @@
+"info"
+planning time: 447µs
+execution time: 4.5s
+distribution: full
+vectorized: false
+"plan type: generic, re-optimized"
+"rows decoded from KV: 5,000,048 (504 MiB, 51 gRPC calls)"
+cumulative time spent in KV: 3.7s
+maximum memory usage: 146 MiB
+network usage: 29 KiB (713 messages)
+isolation level: serializable
+priority: normal
+quality of service: regular
+""
+• sort
+"│ sql nodes: n1, n2"
+│ actual row count: 16
+│ estimated max memory allocated: 20 KiB
+│ estimated max sql temp disk usage: 0 B
+│ estimated row count: 16
+"│ order: +region,+status"
+│
+└── • group (hash)
+"    │ sql nodes: n1, n2"
+    │ actual row count: 16
+    │ estimated max memory allocated: 40 KiB
+    │ estimated row count: 16
+"    │ group by: status, region"
+    │
+    └── • scan
+"          sql nodes: n1, n2"
+"          kv nodes: n1, n2"
+"          actual row count: 5,000,048"
+          KV time: 3.7s
+          KV contention time: 0µs
+"          KV rows decoded: 5,000,048"
+          KV bytes read: 504 MiB
+          KV gRPC calls: 51
+"          estimated row count: 5,000,048 (100% of the table; stats collected 19 minutes ago)"
+          table: orders@orders_pkey
+          spans: FULL SCAN
+""
+Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJzUVt1u2zYUvt9TELxKV7oWqT9LV0rTbgja2IWddCuGwGCtE1eIJLoi3SQo8lh7gT3ZQElWJFlyra3osIsg0jnix3O-75Cfv2L5OcY-Xrx--_rsEmWwjkRKkFRcbSVBK7FN1cnPz9DpAokshEwSJLfJiRKKx3k0gy-QboEg_mVdC_Mv62W-gKCE39cSCb-vElFaT0RpkUC_zGcX5W7o1_ns6h16-aFVGZrNX72e78cxwakIYcoTkNj_A1NMMMPXBG8ysQIpRabDX_OPzsN77BsER-lmq3T4muCVyAD7X7GKVAzYx5f8Ywxz4CFkY40VguJRnEMXBQbFv-XmFh4wwWci3iap9CsC8_5IWSUmeLHhOj2m1GOG5bCJ5djUMEzPsEeY4DfvkS5N-iilxauKEvARe-HK4n0lUgWpikRapoy__ixTmbiTKISVCCH0kUkYcwhjVpH8-KBAogy4TjEbXUQvi8R6_u4MrXgcSx-ZZhHb8CirPq7hXLw_O0NSwaYYDHQC92ocpeqZ_sxlDqGuM7byBZ7jVQsAbjsWWGNTY-ZVi63abFV9s-tHgotoKY1UfA3YpzUtz19hnz6S4-U8Xa8zWHMlsrHZVDOgJNCh0-mH5XR2uZxevX17EtBneyFTh85mV9PL5Xz22-JEvy6uLk4CViXK54vT33dP59PyKS8uF6pJbBGXisdxKaupRU34PUogEdkD4nEsVlxpZanplPI1uKNOi7Snvj8-oE9cftpvmeHrxyduWYtbs5fbJ-htmp8ACBvgOeoB9u2uUo5gn5V0L881zWZFvtWI2xX9TkW_q5_mkIaQ-SigBAWMoMAkKLD03ziwCQocggK3JRPt1sd6YfcrxAz0Zl8gt3eozRbx9pChXohMQTZ2W5Sy5ySgz1vNuMN7obtedFp-jpGCZIPCSN6ireRrfQOhAa1arVbdI2asa8KqBjtHbSpGYjOeNFfMdGUBI_lZJ4FFApsEDtlX3OlkiSbym0fuqU-71eek0Sc93naM72g7oy7fadoOq9uO5znJUN-hxHVNMunyHep63b5DJ_u-U8c54DvVZ2P9ZBGztqDTd-hknG_XFLLa7FjfMYboWbv52H_uO3ViO6b8Be2_C1z7xxgP6yX33xqP9T8ynsn3Mh7vaOOxhkx1aTzOMcbj_SDj6W-1bTzOEI-dg9yIVEJr1rp3Mlo7jageSgjXUEywFNtsBe8yscq_LV5nOVAeCEGqIkuLl_N0l5IqA55Uv3vrSLSNROtIbgOJ5rXmZeMU1J3IbotbXEKqCrF24eL-LuKUlorskglIrcQu71gOvq4XaQ4rku0XuUOy20jsIHFmP3FuG8k8iGT11-S1kayDSF5_TUYbyT6I5AxAcoaOxQ6JDUPq0K5_wNyeAXOZhQ7MF2tOl9Wu0D3I2qSfNaeNNBk6E__gMLnfOEx2s9uJvkRuYnG3jELsY_fGNlah7Y5c88YZWY5LR9ymxoh5lgk8ND2w9cV8E_O11DfZ4pO4ywu-fNjoe-iGxxIIvuC38AoUZEmURlJFqzLz-PjT3wEAAP__PhClYA==

@@ -1,0 +1,31 @@
+"info"
+planning time: 13ms
+execution time: 14.8s
+distribution: local
+vectorized: true
+"plan type: generic, re-optimized"
+"rows decoded from KV: 1,499,842 (96 MiB, 17 gRPC calls)"
+cumulative time spent in KV: 14.5s
+maximum memory usage: 30 MiB
+network usage: 0 B (0 messages)
+used follower read
+sql cpu time: 262ms
+isolation level: serializable
+priority: normal
+quality of service: regular
+""
+• lookup join
+"│ estimated row count: 358,536"
+│ table: orders@idx_orders_customer
+│ equality: (id) = (customer_id)
+│
+└── • filter
+"    │ estimated row count: 35,714"
+    │ filter: country = 'RS'
+    │
+    └── • scan
+"          estimated row count: 500,000 (100% of the table; stats collected 4 hours ago)"
+          table: customers@customers_pkey
+          spans: FULL SCAN
+""
+Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJysVe1u4kYU_d-nuLp_tpUG8FcAj7QSLZtt2W5gBdH2R4WiiX3JurE93pmxAop4rL5An6yyx1BwAgpS_-Fzr87cM_ec4Rn19xQ5Lq4_X49vIermIiP4OJ_dQFRqIzNSGn5eQASfZpMpSBU3gITZFKJuEsN7kN1d710Swx-_Xc-vIepGssyN2sB7eDdfvEOGuYxpKjLSyP9EF5cMCyUj0lqqCnquGybxGrnDMMmL0lTwkmEkFSF_RpOYlJDjrbhPaU4iJtVzkGFMRiRpTbsferT_dVc80gYZjmVaZrnmkMQMKpkMmhGR4aIQVamDDEtNMaxkmsonUqBIxMjw969QTac55C6D3LeQSTLi4PtXmbZAJHNDuUlk3tScf_5uSko-aYgpkjHFHK4chzmOY0v3G0O6PonDlQ83yS8Wf5h_GUMk0lRz6FuoEInat-45br6Ox6ANFVYR_Ehr00ty89O-qdduJnp82dzvVcdkYg0ZZVJtQKSpjISpJnadZjD9PYWoKBuBA6v9XpjoG2mQpSlKwyEYhsiw1ryDdhMstwwt1qxXG_FAyN0DP0w-IHe27O2W-JikhhSpnnvsB4tzGPmNDznni9v5ZPorMqQ1ReXBsoJayrG-4K3ywpCFwfCkOq-lzr1E3SeZ5I3fvWN9NpCjJF7f2Z93O98jw89SPpYF_CWTHGTOYeQexuAgs8hwVmkYVez1ILVd96J2oDYiTXeuD4b11bwlLt5hXNyg610alzAM2TDwXsYlOBEX132Zl_9IzuSlaeq1m1_Ni72e3v6W6rvQRpGwC2gbzA26gT6dsPDVhLlD_1UPhsP-Sw_aoU-Z0G-Z0LvEhFPZkUXPP_ZfW6EfNCs81uA7Qwv_DyKClgj_EhFz0oXMNR2pOHWS0zqp426XDCl-IPt_pWWpIvqiZFT32s9ZTVQDMWljq679mOS7kjXJ_pk7ZHLPMnmnmdw2k3eWyT_N5LWZ_LNMwTl1S4arVD5VrwzHwHfEgITfIdcJO0HYDzph3xl0HLEaikF_4Dn96mFdpeJBV2tbfJNPNe3tpqgufSVSTQxvxCN9IEMqS_JEmyRqKtvtD_8GAAD__3SRzbg=

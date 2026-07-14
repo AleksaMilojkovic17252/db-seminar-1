@@ -1,0 +1,18 @@
+"info"
+distribution: full
+vectorized: true
+""
+• filter
+"│ columns: (id, customer_id, order_date, ship_date, status, priority, total, discount, region)"
+"│ estimated row count: 1,133,109"
+│ filter: (status = 'pending') AND (total > 500)
+│
+└── • scan
+"      columns: (id, customer_id, order_date, ship_date, status, priority, total, discount, region)"
+"      estimated row count: 5,000,000 (100% of the table; stats collected 2 minutes ago)"
+      table: orders@orders_pkey
+      spans: FULL SCAN
+""
+index recommendations: 1
+"1. type: index creation"
+"   SQL command: CREATE INDEX ON seminar.public.orders (status, total) STORING (customer_id, order_date, ship_date, priority, discount, region);"

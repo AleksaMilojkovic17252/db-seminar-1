@@ -1,0 +1,33 @@
+"info"
+distribution: full
+vectorized: true
+""
+• project
+"│ columns: (name, country)"
+│
+└── • hash join (right semi)
+"    │ columns: (id, name, country)"
+"    │ estimated row count: 499,571"
+    │ equality: (customer_id) = (id)
+    │ right cols are key
+    │
+    ├── • filter
+"    │   │ columns: (customer_id, total)"
+"    │   │ estimated row count: 2,525,025"
+    │   │ filter: total > 1000
+    │   │
+    │   └── • scan
+"    │         columns: (customer_id, total)"
+"    │         estimated row count: 5,000,000 (100% of the table; stats collected 1 hour ago)"
+    │         table: orders@orders_pkey
+    │         spans: FULL SCAN
+    │
+    └── • scan
+"          columns: (id, name, country)"
+"          estimated row count: 500,000 (100% of the table; stats collected 7 hours ago)"
+          table: customers@customers_pkey
+          spans: FULL SCAN
+""
+index recommendations: 1
+"1. type: index creation"
+   SQL command: CREATE INDEX ON seminar.public.orders (total) STORING (customer_id);

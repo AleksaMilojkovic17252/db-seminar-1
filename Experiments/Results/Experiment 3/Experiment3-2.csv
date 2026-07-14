@@ -1,0 +1,30 @@
+"info"
+distribution: full
+vectorized: true
+""
+• render
+"│ columns: (id, customer_id, order_date, ship_date, status, priority, total, discount, region)"
+│ render id: id
+│ render customer_id: customer_id
+│ render order_date: order_date
+│ render ship_date: ship_date
+│ render status: status
+│ render priority: priority
+│ render total: total
+│ render discount: discount
+│ render region: region
+│
+└── • filter
+"    │ columns: (id, customer_id, order_date, ship_date, status, priority, total, discount, region)"
+"    │ estimated row count: 1,143,979"
+    │ filter: (status = 'shipped') AND (total > 500)
+    │
+    └── • scan
+"          columns: (id, customer_id, order_date, ship_date, status, priority, total, discount, region)"
+"          estimated row count: 5,000,000 (100% of the table; stats collected 2 hours ago)"
+          table: orders@orders_pkey
+          spans: FULL SCAN
+""
+index recommendations: 1
+"1. type: index creation"
+"   SQL command: CREATE INDEX ON seminar.public.orders (status, total) STORING (customer_id, order_date, ship_date, priority, discount, region);"

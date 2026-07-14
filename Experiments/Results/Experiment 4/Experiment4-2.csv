@@ -1,0 +1,84 @@
+"info"
+distribution: full
+vectorized: true
+""
+• project
+"│ columns: (name, name, quantity)"
+│
+└── • hash join (inner)
+"    │ columns: (order_id, product_id, quantity, product_id, rating, id, name, category, id, customer_id, id, name, country)"
+"    │ estimated row count: 3,520,848"
+    │ equality: (customer_id) = (id)
+    │ right cols are key
+    │
+    ├── • hash join (inner)
+"    │   │ columns: (order_id, product_id, quantity, product_id, rating, id, name, category, id, customer_id)"
+"    │   │ estimated row count: 52,811,367"
+    │   │ equality: (order_id) = (id)
+    │   │ right cols are key
+    │   │
+    │   ├── • hash join (inner)
+"    │   │   │ columns: (order_id, product_id, quantity, product_id, rating, id, name, category)"
+"    │   │   │ estimated row count: 52,811,367"
+    │   │   │ equality: (product_id) = (id)
+    │   │   │ right cols are key
+    │   │   │
+    │   │   ├── • hash join (inner)
+"    │   │   │   │ columns: (order_id, product_id, quantity, product_id, rating)"
+"    │   │   │   │ estimated row count: 483,516,220"
+    │   │   │   │ equality: (product_id) = (product_id)
+    │   │   │   │
+    │   │   │   ├── • scan
+"    │   │   │   │     columns: (order_id, product_id, quantity)"
+"    │   │   │   │     estimated row count: 30,000,000 (100% of the table; stats collected 8 hours ago)"
+    │   │   │   │     table: order_items@order_items_pkey
+    │   │   │   │     spans: FULL SCAN
+    │   │   │   │
+    │   │   │   └── • filter
+"    │   │   │       │ columns: (product_id, rating)"
+"    │   │   │       │ estimated row count: 804,893"
+    │   │   │       │ filter: rating >= 4
+    │   │   │       │
+    │   │   │       └── • scan
+"    │   │   │             columns: (product_id, rating)"
+"    │   │   │             estimated row count: 2,000,000 (100% of the table; stats collected 8 hours ago)"
+    │   │   │             table: reviews@reviews_pkey
+    │   │   │             spans: FULL SCAN
+    │   │   │
+    │   │   └── • filter
+"    │   │       │ columns: (id, name, category)"
+"    │   │       │ estimated row count: 5,455"
+    │   │       │ filter: category = 'Electronics'
+    │   │       │
+    │   │       └── • scan
+"    │   │             columns: (id, name, category)"
+"    │   │             estimated row count: 50,000 (100% of the table; stats collected 8 hours ago)"
+    │   │             table: products@products_pkey
+    │   │             spans: FULL SCAN
+    │   │
+    │   └── • scan
+"    │         columns: (id, customer_id)"
+"    │         estimated row count: 5,420,344 (100% of the table; stats collected 45 minutes ago; using stats forecast for 17 hours in the future)"
+    │         table: orders@orders_pkey
+    │         spans: FULL SCAN
+    │
+    └── • filter
+"        │ columns: (id, name, country)"
+"        │ estimated row count: 33,205"
+        │ filter: country = 'RS'
+        │
+        └── • scan
+"              columns: (id, name, country)"
+"              estimated row count: 500,000 (100% of the table; stats collected 45 minutes ago)"
+              table: customers@customers_pkey
+              spans: FULL SCAN
+""
+index recommendations: 4
+"1. type: index creation"
+   SQL command: CREATE INDEX ON seminar.public.customers (country) STORING (name);
+"2. type: index creation"
+"   SQL command: CREATE INDEX ON seminar.public.order_items (product_id) STORING (order_id, quantity);"
+"3. type: index creation"
+   SQL command: CREATE INDEX ON seminar.public.products (category) STORING (name);
+"4. type: index creation"
+   SQL command: CREATE INDEX ON seminar.public.reviews (rating) STORING (product_id);

@@ -1,3 +1,7 @@
+DROP INDEX IF EXISTS idx_orders_customer;
+DROP INDEX IF EXISTS idx_orders_cust_status;
+DROP INDEX IF EXISTS idx_orders_shipped;
+
 SHOW STATISTICS FOR TABLE orders;
 
 INSERT INTO orders (customer_id, order_date, ship_date, status, priority, total, discount, region)
@@ -27,11 +31,11 @@ EXPLAIN ANALYZE
 SELECT * FROM orders
 WHERE status = 'cancelled' AND total < 10;
 
-SHOW STATISTICS FOR TABLE orders;
-
-CREATE STATISTICS orders_status_total 
-ON status, total 
+CREATE STATISTICS orders_status_total
+ON status, total
 FROM orders;
+
+SHOW STATISTICS FOR TABLE orders;
 
 EXPLAIN ANALYZE
 SELECT * FROM orders

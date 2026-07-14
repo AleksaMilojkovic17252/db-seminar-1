@@ -9,6 +9,10 @@ WHERE status = 'pending';
 SET disallow_full_table_scans = true;
 
 EXPLAIN ANALYZE (DISTSQL)
+SELECT * FROM orders
+WHERE status = 'pending';
+
+EXPLAIN ANALYZE (DISTSQL)
 SELECT * FROM orders WHERE total > 100;
 
 SET disallow_full_table_scans = false;

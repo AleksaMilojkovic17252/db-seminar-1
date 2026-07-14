@@ -1,0 +1,63 @@
+"info"
+planning time: 678µs
+execution time: 1.5s
+distribution: full
+vectorized: true
+"plan type: generic, re-optimized"
+"rows decoded from KV: 5,500,000 (556 MiB, 58 gRPC calls)"
+cumulative time spent in KV: 3s
+maximum memory usage: 37 MiB
+"network usage: 81 MiB (11,044 messages)"
+sql cpu time: 1.9s
+isolation level: serializable
+priority: normal
+quality of service: regular
+""
+• hash join (right semi)
+"│ sql nodes: n1, n2, n3"
+"│ actual row count: 498,942"
+│ estimated max memory allocated: 54 MiB
+│ estimated max sql temp disk usage: 0 B
+│ sql cpu time: 315ms
+"│ estimated row count: 499,571"
+│ equality: (customer_id) = (id)
+│ right cols are key
+│
+├── • filter
+"│   │ sql nodes: n1, n2, n3"
+"│   │ actual row count: 2,524,951"
+│   │ sql cpu time: 297ms
+"│   │ estimated row count: 2,525,025"
+│   │ filter: total > 1000
+│   │
+│   └── • scan
+"│         sql nodes: n1, n2, n3"
+"│         kv nodes: n1, n2, n3"
+"│         actual row count: 5,000,000"
+│         KV time: 2.7s
+│         KV contention time: 0µs
+"│         KV rows decoded: 5,000,000"
+│         KV bytes read: 504 MiB
+│         KV gRPC calls: 52
+│         estimated max memory allocated: 30 MiB
+│         sql cpu time: 1.2s
+"│         estimated row count: 5,000,000 (100% of the table; stats collected 1 hour ago)"
+│         table: orders@orders_pkey
+│         spans: FULL SCAN
+│
+└── • scan
+      sql nodes: n2
+      kv nodes: n2
+"      actual row count: 500,000"
+      KV time: 247ms
+      KV contention time: 0µs
+"      KV rows decoded: 500,000"
+      KV bytes read: 53 MiB
+      KV gRPC calls: 6
+      estimated max memory allocated: 10 MiB
+      sql cpu time: 91ms
+"      estimated row count: 500,000 (100% of the table; stats collected 7 hours ago)"
+      table: customers@customers_pkey
+      spans: FULL SCAN
+""
+Diagram: https://cockroachdb.github.io/distsqlplan/decode.html#eJzUWd1u3LgVvu9TELyKAc4M_yUKWMCp4228u04WtrEt0BqBLNG2YI00K2nquIEfqy_QJyv0N5ZEiR6N0wV6FQ9JHfJ853zfOWS-wfz3GHrw8vSX05MrECwTf60RCJZBuk2K7An8ePH5HATbvEjXOsvB-0sQgL9-PL04Bad_O7u8ugTvmk9JvTTNwmZd2qx7ly7b779EIfgBBMsoPALvP30op4q08GPwjy3GTAOCMT46gggmaag_-WudQ-_vkEAEKUSQwWsEN1ka6DxPs3LqW7XwLPwKPYxglGy2RTl8jWCQZhp632ARFbGGHrzyb2J9of1QZ6vSVqgLP4or8_WJj-t_vmwe9BNE8CSNt-sk90Dn6AhUh4UIXm78cm5FiKKYS8flWGBHYY7JAiL482-gPFfugYTUP4torT0ghFjn9UCQJoVOiihNmjn8n383U1n6mINQB2moQw-4SiLuiHrq5qnQOci0H3pAYXAe_bkev7v49QQEfhznHiC4Htv4UdaufTFy_tvJCcgLvQFVgME7_bVYRUlxtFu0Gi7W-sFcTPCq2mjtfwVrvU6zJ-DHcRr4RXlo0p4t_z0GwWbb-EgFqfy_8YvgXucg3RabbeEB15EQwcrv3VBziOtnBOuxJrB54d9p6JFOJpx9gB59Rvsnw49RXOhMZyvRz4R63APHtJuQnud9OD05O3__C0RQf9XBthM2oSqP-n42g3u4yQVF3HEHbr6c9OYJ3Pv5ff-YxwReP79AQQdQiEkoXuxukyrdddizfF1--dqSETw_-vn9T2mU6Gyl-ke9etpoD1yc_eXjFbg8PT8DP30--wQRjPVt8e6YHP2QRXf31V8Qwc8lIscUHbMRoJWsMB3PN8qbfCuny1gUer0BYZQ_gG3u35X0AmY6EiJG40QkH8aJSIkUUZPpyAcxUG-IwQjAn9JFuqkJ1wF3CBERbi0iAzeFqIeHfnJXGfmoXKQ4nfRTDPwkuOco2V-E8fcS4UWrwtTlUhCMmcKiL8K0K8JKOLNFmCDHYcil3JRh4qgJHXZNHe7asSjxbtnK_GBcjd1Vtd0sNebMGU9_5DBmEGB3kH0VeVZm7BSZvVmRCZYjktyO7uWsqwRy1PdVZXYoUWR_m10rdrz7y6BLyZKmj6u7uA5bLMygfD4zBMYIY2zyQrBxWkiTFS82LJxoFq2Gi0f5ICvUZrFBjbcmIxrZnuAt2cEG2SEns-MPqNnO_6xmU0vNJuKQmt2YNEu2qVhSIubuX7KdXgjo_gQl3_s60S1ki7E7Rp_DrMthsqRzKUwRowo5rdkuiSkT4yxuK2GXxl07FiLvlq3MD0bJTPmq2m4WnYVgo4lCETW78JeD7FvcyJxk2RU3_vbixuhYcWPjrBh1liDiSCSNu9XbyhufBOQPEDD3_0jACHYnFIyaCiaQZNMd11DB3Dl34Audb9Ik18NYjO6EBzstSBkRHd7pOsJ5us0C_WuWBtXa-ufnylA1EOq8qGdJ_eMsaafyItP-eneF71oiQ0uka8npWSLVWatjw0QXj2n2AGK_0EnwVFZsXmtfO_PoR0UTD9Z0waHOdRb5cfQvv5MADK-731XhyXSgo3_WGYCRorKzoBXPdgVdtreDdsVa52VydBe51WOL-Vpg3kKb_a67sIl5sBE8AzdOLbiJw3HjCinmvB03OoobMXBr9uvhpubhRidhG4oG4zbVePFslmyMC7xwR3KEIElE31fChs5SK0uZ6ezOlDM0xeyEtzAeD01xqykxw5I4UDuGwXSxsgSTLQ-qARPPTohJI3WpchHjuB9OI5p2b-dQnqtpyruYWCgvrZSnykFcUQvlxdJ5nfIEOdQZv8ZTYWJX79nDzkhfO3bTtDfVkrFJ6BzlWqBr3osnoVNISVuVEUt3P-j4BHRG69Hu2VcRMsROzmAZtbCMOjbJdAQGP89nmUv4xLvnSGWVEjlsQDM5z90BzeihNGvBmMgVa2GVAqmqJkylCmGvZwp3x-oqd_FYg1pu188SQ4vtsNH9UbMxjEp1OGoOoq6NYPuhxkZRM7uRZrs-anyImjO3Qh-CGlnyadCIHbT6ecUCGt1DlORY62t7zemBZvS-rhU0Nd1AGNKmvtvlg2ML_GQafkfa8GeKIiGxBX9nKV8PAEXUGSuo5bhRUNs9e0EwEteOnKUZMR47anSmWi_3kNZr4vKNRv5vlimMpBiomzvP2zntg1AH5olV3JhiiFd95ZvzZIyq5bhB1nbPPlnN-739qWCOxFmxs0gcfa2aSmatpmQfiRvtuizPPT3U5PM1grdx-vglCqEHib4Jyc2tXGAuwwUPOV4o7N4u3FupCNOCMR7A8gP_LofeN3h5nz5WCF49bXQOvVs_zjWC5_6D_qALna2jJMqLKGhmnp__9N8AAAD__4_zkWA=
