@@ -1,0 +1,75 @@
+"info"
+planning time: 15ms
+execution time: 33.7s
+distribution: local
+vectorized: true
+"plan type: generic, re-optimized"
+"rows decoded from KV: 1,971,077 (237 MiB, 856 gRPC calls)"
+cumulative time spent in KV: 32.8s
+maximum memory usage: 34 MiB
+network usage: 0 B (0 messages)
+used follower read
+sql cpu time: 926ms
+isolation level: serializable
+priority: normal
+quality of service: regular
+""
+• top-k
+│ estimated row count: 100
+"│ order: -count_rows,+s_name"
+│ k: 100
+│
+└── • group (hash)
+"    │ estimated row count: 8,390"
+    │ group by: s_name
+    │
+    └── • lookup join
+"        │ estimated row count: 17,928"
+        │ table: orders@orders_pkey
+        │ equality: (l_orderkey) = (o_orderkey)
+        │ equality cols are key
+        │ pred: o_orderstatus = 'F'
+        │
+        └── • lookup join (anti)
+"            │ estimated row count: 17,928"
+            │ table: lineitem@lineitem_pkey
+            │ equality: (l_orderkey) = (l_orderkey)
+            │ pred: (l_suppkey != l_suppkey) AND (l_receiptdate > l_commitdate)
+            │
+            └── • lookup join (semi)
+"                │ estimated row count: 26,892"
+                │ table: lineitem@lineitem_pkey
+                │ equality: (l_orderkey) = (l_orderkey)
+                │ pred: l_suppkey != l_suppkey
+                │
+                └── • lookup join
+"                    │ estimated row count: 80,676"
+                    │ table: lineitem@lineitem_pkey
+"                    │ equality: (l_orderkey, l_linenumber) = (l_orderkey, l_linenumber)"
+                    │ equality cols are key
+                    │ pred: l_receiptdate > l_commitdate
+                    │
+                    └── • lookup join
+"                        │ estimated row count: 242,028"
+                        │ table: lineitem@l_sk
+                        │ equality: (s_suppkey) = (l_suppkey)
+                        │
+                        └── • lookup join
+                            │ estimated row count: 400
+                            │ table: supplier@supplier_pkey
+                            │ equality: (s_suppkey) = (s_suppkey)
+                            │ equality cols are key
+                            │
+                            └── • lookup join
+                                │ estimated row count: 400
+                                │ table: supplier@s_nk
+                                │ equality: (n_nationkey) = (s_nationkey)
+                                │
+                                └── • filter
+                                    │ estimated row count: 1
+                                    │ filter: n_name = 'SAUDI ARABIA'
+                                    │
+                                    └── • scan
+                                          estimated row count: 25 (100% of the table; stats collected 3 hours ago)
+                                          table: nation@nation_pkey
+                                          spans: FULL SCAN

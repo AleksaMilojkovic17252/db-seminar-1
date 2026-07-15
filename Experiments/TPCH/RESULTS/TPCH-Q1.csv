@@ -1,0 +1,57 @@
+"info"
+planning time: 7ms
+execution time: 4s
+distribution: full
+vectorized: true
+"plan type: generic, re-optimized"
+"rows decoded from KV: 6,002,293 (809 MiB, 82 gRPC calls)"
+cumulative time spent in KV: 3.8s
+maximum memory usage: 43 MiB
+network usage: 5.3 KiB (20 messages)
+max sql temp disk usage: 10 MiB
+sql cpu time: 2.3s
+isolation level: serializable
+priority: normal
+quality of service: regular
+""
+• sort
+"│ sql nodes: n1, n2, n3"
+│ actual row count: 4
+│ estimated max memory allocated: 20 KiB
+│ estimated max sql temp disk usage: 0 B
+│ sql cpu time: 43µs
+│ estimated row count: 6
+"│ order: +l_returnflag,+l_linestatus"
+│
+└── • group (hash)
+"    │ sql nodes: n1, n2, n3"
+    │ actual row count: 4
+    │ estimated max memory allocated: 120 KiB
+    │ estimated max sql temp disk usage: 0 B
+    │ sql cpu time: 243µs
+    │ estimated row count: 6
+"    │ group by: l_returnflag, l_linestatus"
+    │
+    └── • render
+        │
+        └── • filter
+"            │ sql nodes: n1, n2, n3"
+"            │ actual row count: 5,917,251"
+            │ sql cpu time: 47ms
+"            │ estimated row count: 5,915,428"
+            │ filter: l_shipdate <= '1998-09-02'
+            │
+            └── • scan
+"                  sql nodes: n1, n2, n3"
+"                  kv nodes: n1, n2"
+"                  actual row count: 6,002,293"
+                  KV time: 3.8s
+                  KV contention time: 0µs
+"                  KV rows decoded: 6,002,293"
+                  KV bytes read: 809 MiB
+                  KV gRPC calls: 82
+                  estimated max memory allocated: 30 MiB
+                  sql cpu time: 1.4s
+"                  estimated row count: 6,002,293 (100% of the table; stats collected 3 hours ago)"
+                  table: lineitem@lineitem_pkey
+                  spans: FULL SCAN

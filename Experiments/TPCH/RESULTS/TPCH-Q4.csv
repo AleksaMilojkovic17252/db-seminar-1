@@ -1,0 +1,80 @@
+"info"
+planning time: 2ms
+execution time: 13.9s
+distribution: full
+vectorized: true
+"plan type: generic, re-optimized"
+"rows decoded from KV: 343,191 (39 MiB, 20 gRPC calls)"
+cumulative time spent in KV: 13.7s
+maximum memory usage: 60 MiB
+network usage: 392 B (3 messages)
+used follower read
+sql cpu time: 107ms
+isolation level: serializable
+priority: normal
+quality of service: regular
+""
+• sort
+│ sql nodes: n2
+│ actual row count: 4
+│ estimated max memory allocated: 10 KiB
+│ estimated max sql temp disk usage: 0 B
+│ sql cpu time: 8µs
+│ estimated row count: 4
+│ order: +o_orderpriority
+│
+└── • group (hash)
+    │ sql nodes: n2
+    │ actual row count: 4
+    │ estimated max memory allocated: 2.2 MiB
+    │ estimated max sql temp disk usage: 0 B
+    │ sql cpu time: 2ms
+    │ estimated row count: 4
+    │ group by: o_orderpriority
+    │
+    └── • lookup join (semi) (streamer)
+        │ sql nodes: n2
+        │ kv nodes: n2
+        │ used follower read
+"        │ actual row count: 52,498"
+        │ KV time: 1.5s
+        │ KV contention time: 0µs
+"        │ KV rows decoded: 228,809"
+        │ KV bytes read: 31 MiB
+        │ KV gRPC calls: 17
+        │ estimated max memory allocated: 24 MiB
+        │ sql cpu time: 59ms
+"        │ estimated row count: 57,145"
+        │ table: lineitem@lineitem_pkey
+        │ equality: (o_orderkey) = (l_orderkey)
+        │ pred: l_commitdate < l_receiptdate
+        │
+        └── • index join (streamer)
+            │ sql nodes: n2
+            │ kv nodes: n2
+"            │ actual row count: 57,191"
+            │ KV time: 12.2s
+            │ KV contention time: 0µs
+"            │ KV rows decoded: 57,191"
+            │ KV bytes read: 6.2 MiB
+            │ KV gRPC calls: 2
+            │ estimated max memory allocated: 58 MiB
+            │ estimated max sql temp disk usage: 0 B
+            │ sql cpu time: 27ms
+"            │ estimated row count: 57,145"
+            │ table: orders@orders_pkey
+            │
+            └── • scan
+                  sql nodes: n2
+                  kv nodes: n2
+"                  actual row count: 57,191"
+                  KV time: 18ms
+                  KV contention time: 0µs
+"                  KV rows decoded: 57,191"
+                  KV bytes read: 1.9 MiB
+                  KV gRPC calls: 1
+                  estimated max memory allocated: 1.9 MiB
+                  sql cpu time: 5ms
+"                  estimated row count: 57,145 (3.8% of the table; stats collected 3 hours ago)"
+                  table: orders@o_od
+                  spans: [/'1993-07-01' - /'1993-09-30']

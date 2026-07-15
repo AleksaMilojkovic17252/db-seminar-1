@@ -1,0 +1,107 @@
+"info"
+planning time: 20ms
+execution time: 7.6s
+distribution: full
+vectorized: true
+"plan type: generic, re-optimized"
+"rows decoded from KV: 2,236,577 (294 MiB, 54 gRPC calls)"
+cumulative time spent in KV: 7.3s
+maximum memory usage: 31 MiB
+network usage: 608 B (3 messages)
+used follower read
+sql cpu time: 531ms
+isolation level: serializable
+priority: normal
+quality of service: regular
+""
+• top-k
+│ sql nodes: n2
+│ actual row count: 10
+│ estimated max memory allocated: 10 KiB
+│ estimated max sql temp disk usage: 0 B
+│ sql cpu time: 89µs
+│ estimated row count: 10
+"│ order: -sum,+any_not_null"
+│ k: 10
+│
+└── • group (hash)
+    │ sql nodes: n2
+"    │ actual row count: 11,613"
+    │ estimated max memory allocated: 5.3 MiB
+    │ estimated max sql temp disk usage: 0 B
+    │ sql cpu time: 5ms
+"    │ estimated row count: 357,103"
+    │ group by: l_orderkey
+    │
+    └── • render
+        │
+        └── • lookup join (streamer)
+            │ sql nodes: n2
+"            │ kv nodes: n1, n2"
+            │ used follower read
+"            │ actual row count: 30,717"
+            │ KV time: 6.3s
+            │ KV contention time: 0µs
+"            │ KV rows decoded: 586,577"
+            │ KV bytes read: 79 MiB
+            │ KV gRPC calls: 32
+            │ estimated max memory allocated: 14 MiB
+            │ sql cpu time: 184ms
+"            │ estimated row count: 490,717"
+            │ table: lineitem@lineitem_pkey
+            │ equality: (o_orderkey) = (l_orderkey)
+            │ pred: l_shipdate > '1995-03-15'
+            │
+            └── • hash join
+                │ sql nodes: n2
+"                │ actual row count: 146,825"
+                │ estimated max memory allocated: 2.1 MiB
+                │ estimated max sql temp disk usage: 0 B
+                │ sql cpu time: 31ms
+"                │ estimated row count: 218,823"
+                │ equality: (o_custkey) = (c_custkey)
+                │ right cols are key
+                │
+                ├── • filter
+                │   │ sql nodes: n2
+"                │   │ actual row count: 728,850"
+                │   │ sql cpu time: 7ms
+"                │   │ estimated row count: 728,790"
+                │   │ filter: o_orderdate < '1995-03-15'
+                │   │
+                │   └── • scan
+                │         sql nodes: n2
+                │         kv nodes: n2
+"                │         actual row count: 1,500,000"
+                │         KV time: 955ms
+                │         KV contention time: 0µs
+"                │         KV rows decoded: 1,500,000"
+                │         KV bytes read: 188 MiB
+                │         KV gRPC calls: 19
+                │         estimated max memory allocated: 10 MiB
+                │         sql cpu time: 273ms
+"                │         estimated row count: 1,500,000 (100% of the table; stats collected 3 hours ago)"
+                │         table: orders@orders_pkey
+                │         spans: FULL SCAN
+                │
+                └── • filter
+                    │ sql nodes: n2
+"                    │ actual row count: 30,334"
+                    │ sql cpu time: 944µs
+"                    │ estimated row count: 29,980"
+                    │ filter: c_mktsegment = 'BUILDING'
+                    │
+                    └── • scan
+                          sql nodes: n2
+                          kv nodes: n2
+"                          actual row count: 150,000"
+                          KV time: 86ms
+                          KV contention time: 0µs
+"                          KV rows decoded: 150,000"
+                          KV bytes read: 27 MiB
+                          KV gRPC calls: 3
+                          estimated max memory allocated: 10 MiB
+                          sql cpu time: 24ms
+"                          estimated row count: 150,000 (100% of the table; stats collected 3 hours ago)"
+                          table: customer@customer_pkey
+                          spans: FULL SCAN

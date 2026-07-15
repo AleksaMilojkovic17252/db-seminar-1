@@ -1,0 +1,90 @@
+"info"
+planning time: 1ms
+execution time: 1m31s
+distribution: full
+vectorized: true
+"plan type: generic, re-optimized"
+"rows decoded from KV: 1,849,782 (141 MiB, 202 gRPC calls)"
+cumulative time spent in KV: 1m31s
+maximum memory usage: 48 MiB
+network usage: 408 B (3 messages)
+used follower read
+sql cpu time: 833ms
+isolation level: serializable
+priority: normal
+quality of service: regular
+""
+• sort
+│ sql nodes: n2
+│ actual row count: 2
+│ estimated max memory allocated: 10 KiB
+│ estimated max sql temp disk usage: 0 B
+│ sql cpu time: 12µs
+│ estimated row count: 2
+│ order: +l_shipmode
+│
+└── • group (hash)
+    │ sql nodes: n2
+    │ actual row count: 2
+    │ estimated max memory allocated: 1.9 MiB
+    │ estimated max sql temp disk usage: 0 B
+    │ sql cpu time: 3ms
+    │ estimated row count: 2
+    │ group by: l_shipmode
+    │
+    └── • render
+        │
+        └── • lookup join (streamer)
+            │ sql nodes: n2
+            │ kv nodes: n2
+            │ used follower read
+"            │ actual row count: 31,329"
+            │ KV time: 8s
+            │ KV contention time: 0µs
+"            │ KV rows decoded: 29,840"
+            │ KV bytes read: 3.2 MiB
+            │ KV gRPC calls: 6
+            │ estimated max memory allocated: 10 MiB
+            │ sql cpu time: 37ms
+"            │ estimated row count: 28,928"
+            │ table: orders@orders_pkey
+            │ equality: (l_orderkey) = (o_orderkey)
+            │ equality cols are key
+            │
+            └── • filter
+                │ sql nodes: n2
+"                │ actual row count: 31,329"
+                │ sql cpu time: 26ms
+"                │ estimated row count: 28,928"
+"                │ filter: ((l_shipmode IN ('MAIL', 'SHIP')) AND (l_commitdate < l_receiptdate)) AND (l_shipdate < l_commitdate)"
+                │
+                └── • index join (streamer)
+                    │ sql nodes: n2
+"                    │ kv nodes: n1, n2, n3"
+                    │ used follower read
+"                    │ actual row count: 909,971"
+                    │ KV time: 1m23s
+                    │ KV contention time: 0µs
+"                    │ KV rows decoded: 909,971"
+                    │ KV bytes read: 107 MiB
+                    │ KV gRPC calls: 192
+                    │ estimated max memory allocated: 37 MiB
+                    │ estimated max sql temp disk usage: 0 B
+                    │ sql cpu time: 664ms
+"                    │ estimated row count: 906,505"
+                    │ table: lineitem@lineitem_pkey
+                    │
+                    └── • scan
+                          sql nodes: n2
+                          kv nodes: n2
+"                          actual row count: 909,971"
+                          KV time: 310ms
+                          KV contention time: 0µs
+"                          KV rows decoded: 909,971"
+                          KV bytes read: 30 MiB
+                          KV gRPC calls: 4
+                          estimated max memory allocated: 10 MiB
+                          sql cpu time: 99ms
+"                          estimated row count: 906,505 (15% of the table; stats collected 3 hours ago)"
+                          table: lineitem@l_rd
+                          spans: [/'1994-01-01' - /'1994-12-31']

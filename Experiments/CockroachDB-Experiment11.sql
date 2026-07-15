@@ -1,21 +1,17 @@
-CREATE index if not EXISTS idx_orders_status ON orders (status) STORING (total);
+SHOW INDEX FROM orders;
 
-EXPLAIN analyze (DISTSQL)
-SELECT
-    status,
-    count(*) AS cnt,
-    sum(total) AS revenue
+SET CLUSTER SETTING sql.distsql.temp_storage.workmem = '4MiB';
+
+EXPLAIN ANALYZE (DISTSQL)
+SELECT customer_id, count(*) AS order_count, sum(total) AS total_spent
 FROM orders
-GROUP BY status;
+GROUP BY customer_id;
 
-EXPLAIN ANALYZE
-SELECT status, count(*) AS cnt, sum(total) AS revenue
-FROM orders@idx_orders_status
-GROUP BY status
-ORDER BY status;
+CREATE INDEX idx_orders_customer ON orders (customer_id) STORING (total);
 
-EXPLAIN ANALYZE
-SELECT region, count(*) AS cnt, sum(total) AS revenue
+EXPLAIN ANALYZE (DISTSQL)
+SELECT customer_id, count(*) AS order_count, sum(total) AS total_spent
 FROM orders
-GROUP BY region;
+GROUP BY customer_id;
 
+RESET CLUSTER SETTING sql.distsql.temp_storage.workmem;
